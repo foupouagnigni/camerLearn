@@ -118,6 +118,11 @@ class _loginPageState extends State<loginPage> {
                   const SizedBox(height: 20,),
 
                   GestureDetector(
+                    
+                    onTap: () {
+                    // Fonction à exécuter lorsque l'utilisateur appuie sur le texte
+                    Navigator.pushNamed(context, '/home');
+                  },
                     child: Container(
 
                       alignment:Alignment.center,
