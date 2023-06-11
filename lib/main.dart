@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:camerlearn/loginPage/loginPage.dart';
 import 'package:camerlearn/homePage/homePage.dart';
+import 'package:camerlearn/responsablePage/responsablePage.dart';
+import 'package:camerlearn/coursPage/coursPage.dart';
 
 void main() =>runApp(const MyApp());
 
@@ -26,6 +28,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => loginPage(),
         '/home': (context) => homePage(),
+        '/responsable': (context) => responsablePage(),
+        '/cours': (context) => coursPage(),
       },
     );
   }
