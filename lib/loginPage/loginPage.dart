@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
+import 'package:camerlearn/service/service.dart';
+
 
 class loginPage extends StatefulWidget {
   @override
@@ -9,6 +11,13 @@ class loginPage extends StatefulWidget {
 }
 
 class _loginPageState extends State<loginPage> {
+
+TextEditingController emailController =TextEditingController();
+TextEditingController passwordController =TextEditingController();
+
+Service service=Service();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,11 +89,11 @@ class _loginPageState extends State<loginPage> {
                   // ignore: sized_box_for_whitespace
                   Container(
                     width: 250,
-                    child: const TextField(
+                    child:  TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                         labelText: 'Email Address',
-                        suffixIcon: Icon(FontAwesomeIcons.envelope,
-                        size:17,),
+                        suffixIcon: Icon(FontAwesomeIcons.envelope,  size:17,),
                       ),
                     ),
 
@@ -94,7 +103,8 @@ class _loginPageState extends State<loginPage> {
                   // ignore: sized_box_for_whitespace
                   Container(
                     width: 250,
-                    child: const TextField(
+                    child: TextField(
+                      controller: passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: 'password',
@@ -121,7 +131,15 @@ class _loginPageState extends State<loginPage> {
                     
                     onTap: () {
                     // Fonction à exécuter lorsque l'utilisateur appuie sur le texte
-                    Navigator.pushNamed(context, '/home');
+                    print("email:${emailController.text}");
+                    print("password:${passwordController.text}");
+
+                try{
+                     service.saveAdmin(emailController.text,passwordController.text);
+
+                    } catch(e){print("erreur envoie des donnees a l'api");}
+                  
+                   Navigator.pushNamed(context, '/home');
                   },
                     child: Container(
 
@@ -146,8 +164,10 @@ class _loginPageState extends State<loginPage> {
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: 20,
-                          fontWeight: FontWeight.bold
+                          fontWeight: FontWeight.bold,
+                          
                           ),
+                        
                       ),
                     ),
                   ),

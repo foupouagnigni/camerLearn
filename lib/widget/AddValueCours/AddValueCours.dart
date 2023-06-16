@@ -1,9 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:http/http.dart' as http;
 
 class AddValueCours extends StatefulWidget {
   final int index;
@@ -463,9 +465,89 @@ Future<void> _pickImage() async {
       allowedExtensions: ['pdf'],
     );
     if (result != null) {
+      File file = File(result.files.single.path!);
+
+      // Enregistrer le fichier dans le dossier local
+    String folderPath = 'C:/Users/dell/Desktop/POO2/fichierRecu';
+    File newFile = await savePdfToLocalFolder(file, folderPath);
+
+      // Enregistrer le fichier sur le serveur WAMPs
+      var request = http.MultipartRequest('POST', Uri.parse('http://localhost/upload.php'));
+      request.files.add(await http.MultipartFile.fromPath('pdf', file.path));
+      var response = await request.send();
+
+      // Vérifier que le fichier a été enregistré avec succès
+      if (response.statusCode == 200) {
+        print('Le fichier a été enregistré avec succès');
+        // Récupérer le nom du fichier et le chemin d'accès
+        String fileName = response.headers['filename']!;
+        String filePath = 'http://localhost/files/$fileName';
+
+        // Stocker le nom du fichier et le chemin d'accès dans la base de données MySQL
+        savePdfInfo(fileName, filePath);
+      } else {
+        print('Une erreur est survenue lors de l\'enregistrement du fichier');
+      }
+
       setState(() {
-        _pdfFile = File(result.files.single.path!);
+        _pdfFile = newFile;
       });
-    }
+    }// Connexion à la base de données MySQL
+    // Enregistrement du nom du fichier et du chemin d'accès dans la table correspondante
   }
+
+
+
+  void savePdfInfo(String fileName, String filePath) {
+
+    Future<http.Response> savePdfInfo(String fileName, String filePath) async {
+  // Créer l'URI pour l'API de la base de données
+  var uri = Uri.parse('http://localhost:8080/Pdf/createPdf');
+
+  // Headers de la requête
+  Map<String, String> headers = {'Content-Type': 'application/json'};
+
+  // Corps de la requête
+  Map<String, dynamic> body = {
+    'nom': fileName,
+    'cheminAcces': filePath,
+  };
+
+  // Envoi de la requête POST à l'API
+  try {
+    http.Response response = await http.post(
+      uri,
+      headers: headers,
+      body: json.encode(body),
+    );
+    return response;
+  } catch (error) {
+    print('Erreur lors de l\'enregistrement du fichier PDF : $error');
+    throw error;
+  }
+}
+    // Connexion à la base de données MySQL
+    // Enregistrement du nom du fichier et du chemin d'accès dans la table correspondante
+  }
+
+
+
+Future<File> savePdfToLocalFolder(File pdfFile, String folderPath) async {
+  // Vérifier si le dossier existe, sinon le créer
+  final folder = Directory(folderPath);
+  if (!folder.existsSync()) {
+    folder.createSync(recursive: true);
+  }
+
+  // Construire le chemin complet du fichier PDF
+  final fileName = pdfFile.path.split('/').last;
+  final filePath = '$folderPath/$fileName';
+
+  // Copier le fichier PDF dans le dossier local
+  final newFile = await pdfFile.copy(filePath);
+
+  return newFile;
+}
+
+
 }

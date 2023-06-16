@@ -201,7 +201,7 @@ Padding(
         children: [
           Expanded(
             child: Text(
-              'ID',
+              'Colonne 1',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -209,7 +209,7 @@ Padding(
           ),
           Expanded(
             child: Text(
-              'Nom',
+              'Colonne 2',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -217,7 +217,7 @@ Padding(
           ),
           Expanded(
             child: Text(
-              'Description',
+              'Colonne 3',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -232,39 +232,39 @@ Padding(
       Row(
         children: [
           Expanded(
-            child: Text('1'),
+            child: Text('Contenu 1.1'),
           ),
           Expanded(
-            child: Text('Leçon 1'),
+            child: Text('Contenu 1.2'),
           ),
           Expanded(
-            child: Text('Description de la leçon 1'),
-          ),
-        ],
-      ),
-      Row(
-        children: [
-          Expanded(
-            child: Text('2'),
-          ),
-          Expanded(
-            child: Text('Leçon 2'),
-          ),
-          Expanded(
-            child: Text('Description de la leçon 2'),
+            child: Text('Contenu 1.3'),
           ),
         ],
       ),
       Row(
         children: [
           Expanded(
-            child: Text('3'),
+            child: Text('Contenu 2.1'),
           ),
           Expanded(
-            child: Text('Leçon 3'),
+            child: Text('Contenu 2.2'),
           ),
           Expanded(
-            child: Text('Description de la leçon 3'),
+            child: Text('Contenu 2.3'),
+          ),
+        ],
+      ),
+      Row(
+        children: [
+          Expanded(
+            child: Text('Contenu 3.1'),
+          ),
+          Expanded(
+            child: Text('Contenu 3.2'),
+          ),
+          Expanded(
+            child: Text('Contenu 3.3'),
           ),
         ],
       ),
@@ -281,6 +281,7 @@ Padding(
     ],
   ),
 ),
+
 
 
 
